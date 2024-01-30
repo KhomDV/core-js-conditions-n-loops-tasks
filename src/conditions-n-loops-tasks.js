@@ -21,8 +21,8 @@
  *  0  => true
  *  -5 => false
  */
-function isPositive(/* number */) {
-  throw new Error('Not implemented');
+function isPositive(number) {
+  return number >= 0;
 }
 
 /**
@@ -38,8 +38,11 @@ function isPositive(/* number */) {
  *  -5, 0, 5      => 5
  *  -0.1, 0, 0.2  => 0.2
  */
-function getMaxNumber(/* a, b, c */) {
-  throw new Error('Not implemented');
+function getMaxNumber(a, b, c) {
+  let result = a;
+  if (result < b) result = b;
+  if (result < c) result = c;
+  return result;
 }
 
 /**
@@ -60,8 +63,11 @@ function getMaxNumber(/* a, b, c */) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  if (queen.x === king.x) return true;
+  if (queen.y === king.y) return true;
+  if (Math.abs(queen.x - king.x) === Math.abs(queen.y - king.y)) return true;
+  return false;
 }
 
 /**
@@ -82,8 +88,16 @@ function canQueenCaptureKing(/* queen, king */) {
  *  2, 2, 5   => false
  *  3, 0, 3   => false
  */
-function isIsoscelesTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isIsoscelesTriangle(a, b, c) {
+  let result = false;
+  if (a === 0 || b === 0 || c === 0) return false;
+  if (
+    (a === b && a + b >= c) ||
+    (a === c && a + c >= b) ||
+    (b === c && c + b >= a)
+  )
+    result = true;
+  return result;
 }
 
 /**
@@ -100,8 +114,32 @@ function isIsoscelesTriangle(/* a, b, c */) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  let nRoman = '';
+  let nCurrent = num;
+  if (nCurrent >= 30) {
+    nRoman = 'XXX';
+    nCurrent -= 30;
+  }
+  if (nCurrent >= 20) {
+    nRoman = 'XX';
+    nCurrent -= 20;
+  }
+  if (nCurrent >= 10) {
+    nRoman = 'X';
+    nCurrent -= 10;
+  }
+  if (nCurrent === 10) nRoman += 'X';
+  if (nCurrent === 9) nRoman += 'IX';
+  if (nCurrent === 8) nRoman += 'VIII';
+  if (nCurrent === 7) nRoman += 'VII';
+  if (nCurrent === 6) nRoman += 'VI';
+  if (nCurrent === 5) nRoman += 'V';
+  if (nCurrent === 4) nRoman += 'IV';
+  if (nCurrent === 3) nRoman += 'III';
+  if (nCurrent === 2) nRoman += 'II';
+  if (nCurrent === 1) nRoman += 'I';
+  return nRoman;
 }
 
 /**

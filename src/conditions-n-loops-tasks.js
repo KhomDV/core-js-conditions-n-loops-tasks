@@ -267,8 +267,12 @@ function getIndexOf(str, letter) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  const str = `${num}`;
+  for (let i = 0; i < str.length; i += 1) {
+    if (+str[i] === digit) return true;
+  }
+  return false;
 }
 
 /**
@@ -284,8 +288,18 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  if (arr.length <= 2) return -1;
+  let sumL = arr[0];
+  for (let i = 1; i < arr.length; i += 1) {
+    let sumR = 0;
+    for (let j = arr.length - 1; j > i; j -= 1) {
+      sumR += arr[j];
+    }
+    if (sumL === sumR) return i;
+    sumL += arr[i];
+  }
+  return -1;
 }
 
 /**
@@ -309,8 +323,61 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const arr = [];
+  for (let i = 0; i < size; i += 1) {
+    arr[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      arr[i][j] = 0;
+    }
+  }
+
+  let i = 0;
+  let imin = 1;
+  let imax = size - 1;
+  let j = 0;
+  let jmin = 0;
+  let jmax = size - 1;
+  let step = 1;
+  for (let k = 1; k <= size * size; k += 1) {
+    arr[i][j] = k;
+
+    if (step === 1) {
+      if (j === jmax) {
+        step = 2;
+        jmax -= 1;
+        i += 1;
+      } else {
+        j += 1;
+      }
+    } else if (step === 2) {
+      if (i === imax) {
+        step = 3;
+        imax -= 1;
+        j -= 1;
+      } else {
+        i += 1;
+      }
+    } else if (step === 3) {
+      if (j === jmin) {
+        step = 4;
+        jmin += 1;
+        i -= 1;
+      } else {
+        j -= 1;
+      }
+    } else if (step === 4) {
+      if (i === imin) {
+        step = 1;
+        imin += 1;
+        j += 1;
+      } else {
+        i -= 1;
+      }
+    }
+  }
+
+  return arr;
 }
 
 /**

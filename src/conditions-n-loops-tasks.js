@@ -395,8 +395,38 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const matrixCopy = matrix;
+  let sItem = 0;
+  let rItem = 0;
+  let iNew = 0;
+  let jNew = 0;
+  for (let i = 0; i < Math.floor(matrixCopy.length / 2); i += 1) {
+    for (let j = i; j < matrixCopy.length - (i + 1); j += 1) {
+      for (let k = 1; k <= 4; k += 1) {
+        if (k === 1) {
+          iNew = j;
+          jNew = matrixCopy.length - (i + 1);
+          sItem = matrixCopy[iNew][jNew];
+          matrixCopy[iNew][jNew] = matrixCopy[i][j];
+        } else if (k === 2 || k === 3) {
+          rItem = sItem;
+          if (k === 2) {
+            iNew = jNew;
+            jNew = matrixCopy.length - (j + 1);
+          } else {
+            iNew = jNew;
+            jNew = i;
+          }
+          sItem = matrixCopy[iNew][jNew];
+          matrixCopy[iNew][jNew] = rItem;
+        } else if (k === 4) {
+          matrixCopy[i][j] = sItem;
+        }
+      }
+    }
+  }
+  return matrixCopy;
 }
 
 /**
@@ -413,8 +443,34 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const partition = (arrSort, start, end) => {
+    const arrCopy = arrSort;
+    const pivot = arrCopy[end];
+    let i = start;
+
+    for (let j = start; j <= end - 1; j += 1) {
+      if (arrCopy[j] <= pivot) {
+        [arrCopy[i], arrCopy[j]] = [arrCopy[j], arrCopy[i]];
+        i += 1;
+      }
+    }
+
+    [arrCopy[i], arrCopy[end]] = [arrCopy[end], arrCopy[i]];
+    return i;
+  };
+
+  const quickSort = (arrSort, start, end) => {
+    if (start < end) {
+      const pi = partition(arrSort, start, end);
+      quickSort(arrSort, start, pi - 1);
+      quickSort(arrSort, pi + 1, end);
+    }
+    return arrSort;
+  };
+
+  quickSort(arr, 0, arr.length - 1);
+  return arr;
 }
 
 /**
@@ -434,8 +490,22 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let srtCopy = str;
+  for (let k = 1; k <= iterations; k += 1) {
+    let t1 = '';
+    let t2 = '';
+    for (let i = 0; i < srtCopy.length; i += 1) {
+      if (i % 2 === 0) {
+        t1 += srtCopy[i];
+      } else {
+        t2 += srtCopy[i];
+      }
+    }
+    srtCopy = t1 + t2;
+    if (srtCopy === str) return shuffleChar(str, iterations % k);
+  }
+  return srtCopy;
 }
 
 /**
@@ -455,8 +525,41 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  let str = `${number}`;
+  const arrStrRight = [];
+  const arrStrLeft = [];
+  let numbMin = 0;
+  let numbMax = 0;
+
+  for (let i = str.length - 1; i > 0; i -= 1) {
+    arrStrRight.push(`${str[i]}`);
+    if (+str[i] > +str[i - 1]) {
+      numbMin = +str[i - 1];
+      numbMax = +str[i];
+      arrStrRight.push(`${str[i - 1]}`);
+      for (let j = 0; j < i - 1; j += 1) {
+        arrStrLeft.push(`${str[j]}`);
+      }
+      break;
+    }
+  }
+
+  arrStrRight.sort((a, b) => a - b);
+  const index = arrStrRight.findIndex((e) => e > numbMin && e <= numbMax);
+  const numbStr = +arrStrRight[index];
+  arrStrRight.splice(index, 1);
+
+  str = '';
+  for (let i = 0; i < arrStrLeft.length; i += 1) {
+    str += arrStrLeft[i];
+  }
+  str += numbStr;
+  for (let i = 0; i < arrStrRight.length; i += 1) {
+    str += arrStrRight[i];
+  }
+
+  return +str;
 }
 
 module.exports = {
